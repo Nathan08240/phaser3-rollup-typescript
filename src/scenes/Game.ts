@@ -1,24 +1,34 @@
-import Phaser from 'phaser';
+import { World } from "matter";
+import Phaser from "phaser";
+import { Player } from "../Classes/Player";
+import { Stickman } from "../Classes/Stickman";
+import config from "../config";
 
-export default class Demo extends Phaser.Scene {
+export default class Game extends Phaser.Scene {
+  private player1: Player | null = null;
+  private floorY: number = 300;
+
+  private stickman: string = "stickman";
+  private healthBar: string = "healthBar";
+
   constructor() {
-    super('GameScene');
-  }
-
-  preload() {
-    this.load.image('logo', 'assets/phaser3-logo.png');
+    super("GameScene");
   }
 
   create() {
-    const logo = this.add.image(400, 70, 'logo');
+    this.player1 = new Player(
+      {
+        scene: this.sys.scene,
+        x: 200,
+        y: this.floorY,
+      },
+      this.stickman,
+      this.healthBar
+    );
+  }
 
-    this.tweens.add({
-      targets: logo,
-      y: 350,
-      duration: 1500,
-      ease: 'Sine.inOut',
-      yoyo: true,
-      repeat: -1
-    });
+  preload() {
+    this.load.image(this.stickman, "assets/stickman.png");
+    this.load.image(this.healthBar, "assets/healthBar.png");
   }
 }
